@@ -16,7 +16,14 @@
         autocomplete="off"
         placeholder="Search images..."
       />
-      <button type="submit">Search</button>
+      <button class="searchBtn" type="submit" id="submitBtn">
+        <img src="../assets/search-icon.svg" alt="My Happy SVG" />
+      </button>
     </form>
+    <div class="gallery"></div>
+    <div class="loader">
+      <button class="loaderBtn is-hidden" type="submit" id="loadMoreBtn">Load more</button>
+    </div>
+    <script defer type="module" src="index.js"></script>
   </body>
 </html>
