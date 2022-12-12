@@ -3,22 +3,23 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const searchForm = document.querySelector('#search-form');
-const input = document.querySelector('input');
+const btnSearch = document.querySelector('.search-btn');
+const btnLoadMore = document.querySelector('.loaderBtn');
 const gallery = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelectorAll('#loadMoreBtn');
-const APIKey = '22110110-b4af2cd8f53ff6ca106014951';
-const safesearch = true;
+const input = document.querySelector('input');
+
+const APIkey = '22110110-b4af2cd8f53ff6ca106014951';
+const safeSearch = true;
 const amountPerPage = 40;
 
 let pageNumber = 1;
-let leftHits;
 let totalHits = 0;
+let leftHits;
 
-async function fetchFiles(search, page) {
+async function fetchData(search, page) {
   try {
     const response = await axios.get(
-      `https://pixabay.com/api/?key=${APIKey}&q=${search}&image_type=photo&orientation=horizontal&safesearch=${safesearch}&page=${page}&per_page=${amountPerPage}`
+      `https://pixabay.com/api/?key=${APIkey}&q=${search}&image_type=photo&orientation=horizontal&safesearch=${safeSearch}&page=${page}&per_page=${amountPerPage}`
     );
     return response.data;
   } catch (error) {
@@ -26,21 +27,21 @@ async function fetchFiles(search, page) {
   }
 }
 
-const searchFiles = () => {
-  fetchFiles(input.value, pageNumber)
-    .then(photos => {
+const searchImages = () => {
+  fetchData(input.value, pageNumber)
+    .then(images => {
       if (pageNumber < 1) {
         gallery.innerHTML = '';
       } else if (pageNumber >= 1) {
-        loadMoreBtn.classList.remove('is-hidden');
+        btnLoadMore.classList.remove('is-hidden');
         if (leftHits < 0) {
-          loadMoreBtn.classList.add('is-hidden');
+          btnLoadMore.classList.add('is-hidden');
           Notiflix.Notify.failure(
             `We're sorry, but you've reached the end of search results.`
           );
         }
       }
-      viewFiles(photos);
+      viewFiles(images);
       pageNumber += 1;
       leftHits = totalHits - pageNumber * 40;
     })
@@ -48,3 +49,77 @@ const searchFiles = () => {
       console.log(error);
     });
 };
+
+function viewFiles(images) {
+  totalHits = images.totalHits;
+  if (pageNumber <= 1) {
+    leftHits = totalHits;
+    if (totalHits <= 0) {
+      Notiflix.Notify.failure(
+        `Sorry, there are no images matching your search query. Plese try again.`
+      );
+      btnLoadMore.classList.toggle('is-hidden');
+    } else {
+      Notiflix.Notify.success(`Found ${images.totalHits} images`);
+    }
+  }
+  images.hits.forEach(
+    ({
+      webformatURL,
+      largeImageURL,
+      tags,
+      likes,
+      views,
+      comments,
+      downloads,
+    }) => {
+      gallery.innerHTML += `<div class="photo-card">
+                <a class="photo-card__item" href="${largeImageURL}">
+                    <img class="photo-card__img" src="${webformatURL}" alt="${tags}" loading="lazy" />
+                </a>
+                <div class="info">
+                    <p class="info-item">
+                        <b class="info-item__descriptions">Likes
+                        <span class="info-item__count">${likes}</span>
+                        </b>
+                    </p>
+                    <p class="info-item">
+                        <b class="info-item__descriptions">Views
+                        <span class="info-item__count">${views}</span>
+                        </b>
+                    </p>
+                    <p class="info-item">
+                        <b class="info-item__descriptions">Comments
+                        <span class="info-item__count">${comments}</span>
+                        </b>
+                    </p>
+                    <p class="info-item">
+                        <b class="info-item__descriptions">Downloads
+                        <span class="info-item__count">${downloads}</span>
+                        </b>
+                    </p>
+                </div>
+            </div>`;
+    }
+  );
+  let lightbox = new SimpleLightbox('.gallery a', {
+    captionPosition: 'outside',
+    captionsData: 'alt',
+    captionDelay: '600',
+  });
+}
+
+const firstSearchImages = event => {
+  event.preventDefault();
+  pageNumber = 1;
+  gallery.innerHTML = '';
+  searchImages();
+};
+
+const searchMoreImages = event => {
+  event.preventDefault();
+  searchImages();
+};
+
+btnSearch.addEventListener('click', firstSearchImages);
+btnLoadMore.addEventListener('click', searchMoreImages);

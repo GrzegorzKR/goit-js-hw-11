@@ -11,14 +11,14 @@
   box-shadow: 0 5px 5px lightgray;
 }
 
-.searchBtn {
+.search-btn {
   height: 38px;
   border: none;
   border-radius: 0 5px 5px 0;
   background-color: #81828a;
 }
 
-.searchBtn:hover {
+.search-btn:hover {
   background-color: #172a79;
 }
 
