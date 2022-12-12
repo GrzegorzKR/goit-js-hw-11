@@ -41,7 +41,7 @@ const searchImages = () => {
           );
         }
       }
-      viewFiles(images);
+      renderGallery(images);
       pageNumber += 1;
       leftHits = totalHits - pageNumber * 40;
     })
@@ -50,7 +50,7 @@ const searchImages = () => {
     });
 };
 
-function viewFiles(images) {
+function renderGallery(images) {
   totalHits = images.totalHits;
   if (pageNumber <= 1) {
     leftHits = totalHits;
