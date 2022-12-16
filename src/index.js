@@ -8,7 +8,6 @@ const btnLoadMore = document.querySelector('.loaderBtn');
 const gallery = document.querySelector('.gallery');
 const input = document.querySelector('input');
 
-let gallerySimpleLightbox = new SimpleLightbox('.gallery a');
 const APIkey = '22110110-b4af2cd8f53ff6ca106014951';
 const safeSearch = true;
 const amountPerPage = 40;
@@ -105,7 +104,7 @@ function renderGallery(images) {
             </div>`;
     }
   );
-  gallerySimpleLightbox = new SimpleLightbox('.gallery a', {
+  const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
   });
 }
@@ -120,7 +119,6 @@ const firstSearchImages = event => {
 const searchMoreImages = event => {
   event.preventDefault();
   searchImages();
-  gallerySimpleLightbox.refresh();
 };
 
 btnSearch.addEventListener('click', firstSearchImages);
