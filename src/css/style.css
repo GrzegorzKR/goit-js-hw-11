@@ -19,11 +19,13 @@
   height: 38px;
   border: none;
   border-radius: 0 5px 5px 0;
-  background-color: #b9bac2;
+  background-color: #172a79;
+  transition: all 0.3s ease;
 }
 
 .search-btn:hover {
-  background-color: #172a79;
+  scale: 1.1;
+  cursor: pointer;
 }
 
 .loader {
@@ -35,14 +37,16 @@
   width: 150px;
   height: 40px;
   border: none;
-  background-color: #b9bac2;
+  background-color: #172a79;
   color: white;
   font-size: 16px;
   border-radius: 5px;
+  transition: all 0.3s ease;
 }
 
 .loaderBtn:hover {
-  background-color: #172a79;
+  scale: 1.1;
+  cursor: pointer;
 }
 
 input {
@@ -60,14 +64,14 @@ input {
   scroll-behavior: smooth;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
   padding: 10px;
+  gap: 25px;
 }
 
 .photo-card {
   width: 400px;
   height: 300px;
-  margin: 20px;
 
   border-radius: 10px;
   overflow: hidden;
@@ -116,4 +120,19 @@ input {
 
 .is-hidden {
   display: none;
+}
+
+.top-button {
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+  display: inline-block;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.top-button:hover {
+  scale: 1.1;
 }

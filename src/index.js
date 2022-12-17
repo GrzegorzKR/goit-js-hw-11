@@ -5,6 +5,8 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const btnSearch = document.querySelector('.search-btn');
 const btnLoadMore = document.querySelector('.loaderBtn');
+const btnTop = document.querySelector('.top-button');
+btnTop.style.display = 'none';
 const gallery = document.querySelector('.gallery');
 const input = document.querySelector('input');
 
@@ -60,9 +62,13 @@ function renderGallery(images) {
       Notiflix.Notify.failure(
         `Sorry, there are no images matching your search query. Plese try again.`
       );
-      btnLoadMore.classList.toggle('is-hidden');
+      btnLoadMore.classList.add('is-hidden');
+    } else if (totalHits < 40) {
+      Notiflix.Notify.success(`Found ${images.totalHits} images`);
+      btnLoadMore.classList.add('is-hidden');
     } else {
       Notiflix.Notify.success(`Found ${images.totalHits} images`);
+      btnLoadMore.classList.remove('is-hidden');
     }
   }
   images.hits.forEach(
@@ -123,3 +129,27 @@ const searchMoreImages = event => {
 
 btnSearch.addEventListener('click', firstSearchImages);
 btnLoadMore.addEventListener('click', searchMoreImages);
+
+
+
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function () {
+  scrollFunction();
+};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    btnTop.style.display = 'block';
+  } else {
+    btnTop.style.display = 'none';
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
+
+btnTop.addEventListener('click', topFunction);
